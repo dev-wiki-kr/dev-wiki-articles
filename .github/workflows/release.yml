@@ -1,0 +1,49 @@
+name: Release
+
+# on:
+#   pull_request:
+#     types: [closed]
+
+on: 
+  push:
+
+jobs:
+  get-file-contents:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Install jq
+      run: sudo apt-get install -y jq
+
+    - name: Get the changed files
+      id: changed-files
+      run: |
+        FILES=$(curl -s \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.event.pull_request.head.repo.full_name }}/pulls/${{ github.event.pull_request.number }}/files" \
+          | jq -r '.[].filename')
+        echo "$FILES" > changed_files.txt
+
+    - name: Read and collect file contents
+      id: read-files
+      run: |
+        CONTENTS=()
+        while IFS= read -r file; do
+          echo "Processing file: $file"
+          CONTENT=$(curl -s \
+            -H "Accept: application/vnd.github.v3.raw" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/contents/$file?ref=${{ github.event.pull_request.head.sha }}")
+          CONTENTS+=("$CONTENT")
+        done < changed_files.txt
+        CONTENTS_JSON=$(jq -nc '$ARGS.positional' --args "${CONTENTS[@]}")
+        echo "::set-output name=file_contents::$CONTENTS_JSON"
+
+    - name: Output file contents
+      run: echo "${{ steps.read-files.outputs.file_contents }}"
