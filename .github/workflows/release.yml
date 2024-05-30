@@ -1,16 +1,11 @@
 name: Release
 
-# on:
-#   pull_request:
-#     types: [closed]
-
 on:
   pull_request:
     types: [opened, synchronize]
 
 jobs:
   get-file-contents:
-    # if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -31,19 +26,25 @@ jobs:
           | jq -r '.[].filename')
         echo "$FILES" > changed_files.txt
 
-    - name: Read and collect file contents
+    - name: Read and collect docs file contents
       id: read-files
       run: |
         CONTENTS=()
         while IFS= read -r file; do
-          echo "Processing file: $file"
-          CONTENT=$(curl -s \
-            -H "Accept: application/vnd.github.v3.raw" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/contents/$file?ref=${{ github.event.pull_request.head.sha }}")
-          CONTENTS+=("$CONTENT")
+          if [[ $file == docs/* ]]; then
+            echo "Processing file: $file"
+            CONTENT=$(curl -s \
+              -H "Accept: application/vnd.github.v3.raw" \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/contents/$file?ref=${{ github.event.pull_request.head.sha }}")
+            CONTENTS+=("$CONTENT")
+          fi
         done < changed_files.txt
-        CONTENTS_JSON=$(jq -nc '$ARGS.positional' --args "${CONTENTS[@]}")
+        if [ ${#CONTENTS[@]} -eq 0 ]; then
+          CONTENTS_JSON="[]"
+        else
+          CONTENTS_JSON=$(jq -nc '$ARGS.positional' --args "${CONTENTS[@]}")
+        fi
         echo "::set-output name=file_contents::$CONTENTS_JSON"
 
     - name: Output file contents
