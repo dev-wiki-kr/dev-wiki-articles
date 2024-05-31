@@ -43,42 +43,9 @@ jobs:
     - name: Process each changed file
       env: 
         AUTHOR: ${{ steps.pull-request.outputs.author }}
-        FILES: ${{ steps.set-json-output.outputs.changed_files }}
 
       run: |
-        echo "$changed_files" | jq -c '.[]' | while read file; do
-          FILENAME=$(echo $file | jq -r '.filename')
-          STATUS=$(echo $file | jq -r '.status')
-          CONTENTS_URL=$(echo $file | jq -r '.contents_url')
-          echo "Filename: $FILENAME"
-          echo "Status: $STATUS"
-          echo "Contents URL: $CONTENTS_URL"
-
-          CONTENT=$(curl -s \
-            -H "Accept: application/vnd.github.v3.raw" \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            "$CONTENTS_URL")
-          echo "Content: $CONTENT"
-
-          if [ $STATUS_CODE = "added" ]; then
-            echo "execute"
-            curl -X PATCH $API_URL/api/post/$TITLE \
-              -H "Content-Type: application/json" \
-              -d '{
-                "content": "'"${CONTENT}"'",
-                "contributor": "'"${AUTHOR}"'"
-              }'
-          else
-            # Article does not exist, send POST request
-            curl -X POST $API_URL/api/post \
-              -H "Content-Type: application/json" \
-              -d '{
-                "title": "'"${TITLE}"'",
-                "content": "'"${CONTENT}"'",
-                "author": "'"${AUTHOR}"'"
-              }'
-          fi
-        done
+        echo "$changed_files" | jq -c '.[]'
 
       # - name: update or post article each files
       #   env:
