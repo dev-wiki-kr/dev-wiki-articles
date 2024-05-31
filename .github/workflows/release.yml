@@ -25,6 +25,7 @@ jobs:
           "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
           | jq -r '[.[] | {filename: .filename, status: .status, contents_url: .contents_url}]')
         echo "$FILES" > changed_files.json
+        cat changed_files.json
 
     - name: Set JSON output
       id: set-json-output
