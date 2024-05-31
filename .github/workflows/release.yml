@@ -33,9 +33,10 @@ jobs:
 
         cat "changed_files.json" | jq -c '.[]' | while read file; do
           FILENAME=$(echo $file | jq -r '.filename')
+          TITLE=$(basename "$FILENAME" .md)
           STATUS=$(echo $file | jq -r '.status')
           CONTENTS_URL=$(echo $file | jq -r '.contents_url')
-          echo "Filename: $FILENAME"
+          echo "TITLE: $TITLE"
           echo "Status: $STATUS"
           echo "Contents URL: $CONTENTS_URL"
 
@@ -54,7 +55,6 @@ jobs:
                 "contributor": "'"${AUTHOR}"'"
               }'
           else
-            # Article does not exist, send POST request
             curl -X POST $API_URL/api/post \
               -H "Content-Type: application/json" \
               -d '{
@@ -64,41 +64,3 @@ jobs:
               }'
           fi
         done
-
-      # - name: update or post article each files
-      #   env:
-      #     AUTHOR: ${{ steps.pull-request.outputs.author }}
-
-      #   run: |
-      #     for FILE in ${{ steps.files.outputs.changed_files }}; do
-      #       # 여기서 filename, status를 api에서 가져오서 처리
-      #       # status는 added일때, modified가 존재
-      #       if [ -f "$FILE" ]; then
-      #         CONTENT=$(cat "$FILE")
-      #         TITLE=$(basename "$FILE" .md)
-
-      #         # Check if the article exists
-      #         STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" $API_URL/articles/$TITLE)
-
-      #         if [ $STATUS_CODE -eq 200 ]; then
-      #           # Article exists, send PATCH request
-      #           curl -X PATCH $API_URL/articles/$TITLE \
-      #             -H "Content-Type: application/json" \
-      #             -d '{
-      #               "content": "'"${CONTENT}"'",
-      #               "contributor": "'"${MERGED_BY}"'"
-      #             }'
-      #         else
-      #           # Article does not exist, send POST request
-      #           curl -X POST $API_URL/articles \
-      #             -H "Content-Type: application/json" \
-      #             -d '{
-      #               "title": "'"${TITLE}"'",
-      #               "content": "'"${CONTENT}"'",
-      #               "author": "'"${AUTHOR}"'"
-      #             }'
-      #         fi
-      #       fi
-      #     done
-
-
