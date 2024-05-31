@@ -21,32 +21,48 @@ jobs:
 
     - name: Get the changed files
       id: changed-files
+      env: 
+        AUTHOR: ${{ github.event.pull_request.user.login }}
       run: |
         FILES=$(curl -s \
           -H "Accept: application/vnd.github.v3+json" \
           "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
           | jq -r '[.[] | {filename: .filename, status: .status, contents_url: .contents_url}]')
         echo "$FILES" > changed_files.json
-        cat changed_files.json
 
-    - name: Set JSON output
-      id: set-json-output
-      run: |
-        FILES=$(cat changed_files.json)
-        echo "changed_files=$(echo $FILES | jq -sRr @uri)" >> $GITHUB_ENV
-    
-    - name: Get pull request details
-      id: pull-request
-      run: |
-        echo "::set-output name=author::$(echo ${{ github.event.pull_request.user.login }})"
+        echo "changed_files.json" | jq -c '.[]' | while read file; do
+          FILENAME=$(echo $file | jq -r '.filename')
+          STATUS=$(echo $file | jq -r '.status')
+          CONTENTS_URL=$(echo $file | jq -r '.contents_url')
+          echo "Filename: $FILENAME"
+          echo "Status: $STATUS"
+          echo "Contents URL: $CONTENTS_URL"
 
-    - name: Process each changed file
-      env: 
-        AUTHOR: ${{ steps.pull-request.outputs.author }}
+          CONTENT=$(curl -s \
+            -H "Accept: application/vnd.github.v3.raw" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "$CONTENTS_URL")
+          echo "Content: $CONTENT"
 
-      run: |
-        FILES=$(echo $changed_files | jq -r @uri | jq -r @json)
-        echo "$FILES" | jq -c '.[]'
+          if [ $STATUS_CODE = "added" ]; then
+            echo "execute"
+            curl -X PATCH $API_URL/api/post/$TITLE \
+              -H "Content-Type: application/json" \
+              -d '{
+                "content": "'"${CONTENT}"'",
+                "contributor": "'"${AUTHOR}"'"
+              }'
+          else
+            # Article does not exist, send POST request
+            curl -X POST $API_URL/api/post \
+              -H "Content-Type: application/json" \
+              -d '{
+                "title": "'"${TITLE}"'",
+                "content": "'"${CONTENT}"'",
+                "author": "'"${AUTHOR}"'"
+              }'
+          fi
+        done
 
       # - name: update or post article each files
       #   env:
