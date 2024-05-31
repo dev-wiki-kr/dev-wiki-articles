@@ -31,7 +31,7 @@ jobs:
       id: set-json-output
       run: |
         FILES=$(cat changed_files.json)
-        echo "changed_files=${FILES}" >> $GITHUB_OUTPUT
+        echo "changed_files=$FILES" >> $GITHUB_OUTPUT
 
     # - name: Read and collect docs file contents
     #   id: read-files
