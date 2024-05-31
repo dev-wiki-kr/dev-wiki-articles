@@ -33,7 +33,7 @@ jobs:
       id: set-json-output
       run: |
         FILES=$(cat changed_files.json)
-        echo "::set-output name=changed_files::$FILES"
+        echo "changed_files=$(echo $FILES | jq -sRr @uri)" >> $GITHUB_ENV
     
     - name: Get pull request details
       id: pull-request
@@ -46,7 +46,7 @@ jobs:
         FILES: ${{ steps.set-json-output.outputs.changed_files }}
 
       run: |
-        echo "$FILES" | jq -c '.[]' | while read file; do
+        echo "$changed_files" | jq -c '.[]' | while read file; do
           FILENAME=$(echo $file | jq -r '.filename')
           STATUS=$(echo $file | jq -r '.status')
           CONTENTS_URL=$(echo $file | jq -r '.contents_url')
