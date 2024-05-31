@@ -29,11 +29,11 @@ jobs:
         echo "$FILES" > changed_files.json
         cat changed_files.json
 
-    # - name: Set JSON output
-    #   id: set-json-output
-    #   run: |
-    #     FILES=$(cat changed_files.json)
-    #     echo "changed_files=$(echo $FILES | jq -sRr @uri)" >> $GITHUB_ENV
+    - name: Set JSON output
+      id: set-json-output
+      run: |
+        FILES=$(cat changed_files.json)
+        echo "changed_files=$(echo $FILES | jq -sRr @uri)" >> $GITHUB_ENV
     
     - name: Get pull request details
       id: pull-request
@@ -45,7 +45,8 @@ jobs:
         AUTHOR: ${{ steps.pull-request.outputs.author }}
 
       run: |
-        echo "changed_files.json" | jq -c '.[]'
+        FILES=$(echo $changed_files | jq -r @uri | jq -r @json)
+        echo "$FILES" | jq -c '.[]'
 
       # - name: update or post article each files
       #   env:
