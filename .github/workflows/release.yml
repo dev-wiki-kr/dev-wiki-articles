@@ -25,12 +25,13 @@ jobs:
         AUTHOR: ${{ github.event.pull_request.user.login }}
       run: |
         FILES=$(curl -s \
-          -H "Accept: application/vnd.github.v3+json" \
-          "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
-          | jq -r '[.[] | {filename: .filename, status: .status, contents_url: .contents_url}]')
+        -H "Accept: application/vnd.github.v3+json" \
+        "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" \
+        | jq -c '[.[] | {filename: .filename, status: .status, contents_url: .contents_url}]')
+
         echo "$FILES" > changed_files.json
 
-        echo "changed_files.json" | jq -c '.[]' | while read file; do
+        cat "changed_files.json" | jq -c '.[]' | while read file; do
           FILENAME=$(echo $file | jq -r '.filename')
           STATUS=$(echo $file | jq -r '.status')
           CONTENTS_URL=$(echo $file | jq -r '.contents_url')
@@ -44,7 +45,7 @@ jobs:
             "$CONTENTS_URL")
           echo "Content: $CONTENT"
 
-          if [ $STATUS_CODE = "added" ]; then
+          if [ $STATUS = "added" ]; then
             echo "execute"
             curl -X PATCH $API_URL/api/post/$TITLE \
               -H "Content-Type: application/json" \
