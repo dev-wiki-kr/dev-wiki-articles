@@ -62,18 +62,20 @@ jobs:
             curl -X PATCH $API_URL/api/post/$SHORT_TITLE \
               -H "Content-Type: application/json" \
               -d '{
-                "title": $TITLE,
-                "content": "${CONTENT}",
-                "editor": "${AUTHOR}"
+                "title": "$TITLE",
+                "content": "$CONTENT",
+                "editor": "$AUTHOR"
               }'
           else
+            echo "TITLE: $TITLE"
+ 
             curl -X POST $API_URL/api/post \
               -H "Content-Type: application/json" \
               -d '{
-                "title": $TITLE,
-                "shortTitle": "${SHORT_TITLE}",
-                "content": "${CONTENT}",
-                "userName": "${AUTHOR}"
+                "title": "$TITLE",
+                "shortTitle": "$SHORT_TITLE",
+                "content": "$CONTENT",
+                "userName": "$AUTHOR"
               }'
           fi
         done
