@@ -59,24 +59,24 @@ jobs:
           echo "API_URL: $AUTHOR"
 
           if [ $STATUS = "modified" ]; then
-          curl -X POST $API_URL/api/post \
+            curl -X PATCH $API_URL/api/post/$SHORT_TITLE \
+              -H "Content-Type: application/json" \
+              -d '{
+                "title": "$TITLE",
+                "content": "$CONTENT",
+                "editor": "$AUTHOR"
+              }'
+          else
+            echo "TEST_TITLE: $TITLE"
+
+
+            curl -X POST https://devwiki.co.kr/api/post \
             -H "Content-Type: application/json" \
             -d '{
               "title": "test",
-              "shortTitle": "$SHORT_TITLE",
-              "content": "$CONTENT",
-              "userName": "$AUTHOR"
+              "shortTitle": "test",
+              "content": "test",
+              "userName": "hwangstar156"
             }'
-          else
-            echo "TEST_TITLE: $TITLE"
- 
-            curl -X POST $API_URL/api/post \
-              -H "Content-Type: application/json" \
-              -d '{
-                "title": "test",
-                "shortTitle": "$SHORT_TITLE",
-                "content": "$CONTENT",
-                "userName": "$AUTHOR"
-              }'
           fi
         done
