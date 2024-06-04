@@ -2,11 +2,10 @@ name: Release
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, synchronize]
 
 jobs:
   release:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     env:  
       API_URL: 'https://devwiki.co.kr'
@@ -55,6 +54,9 @@ jobs:
           done <<< $CONTENT
 
           echo "TITLE: $TITLE"
+
+          echo "API_URL: $API_URL"
+          echo "API_URL: $AUTHOR"
 
           if [ $STATUS = "modified" ]; then
             curl -X PATCH $API_URL/api/post/$SHORT_TITLE \
