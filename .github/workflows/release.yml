@@ -48,7 +48,7 @@ jobs:
 
           while IFS= read -r line; do
             if [[ "$line" =~ ^#[^#].* ]]; then
-              "TITLE=${line#\# }"
+              TITLE=${line#\# }
               break
             fi
           done <<< $CONTENT
