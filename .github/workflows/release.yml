@@ -72,7 +72,7 @@ jobs:
             curl -X POST $API_URL/api/post \
               -H "Content-Type: application/json" \
               -d '{
-                "title": "$TITLE",
+                "title": "test",
                 "shortTitle": "$SHORT_TITLE",
                 "content": "$CONTENT",
                 "userName": "$AUTHOR"
