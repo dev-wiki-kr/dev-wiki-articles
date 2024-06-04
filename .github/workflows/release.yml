@@ -78,9 +78,9 @@ jobs:
               -H "Content-Type: application/json" \
               -d '{
                 "title": "test",
-                "shortTitle": "$SHORT_TITLE",
-                "content": "$CONTENT",
-                "userName": "$AUTHOR"
+                "shortTitle": "'"$SHORT_TITLE"'",
+                "content": "'"$CONTENT"'",
+                "userName": "'"$AUTHOR"'"
               }'
           fi
         done
