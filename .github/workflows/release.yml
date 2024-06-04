@@ -51,7 +51,7 @@ jobs:
               echo "TITLE=${line#\# }" >> $GITHUB_ENV
               break
             fi
-          done < "$CONTENT"
+          done <<< "$CONTENT"
 
           echo "TITLE: $TITLE"
 
