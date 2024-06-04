@@ -68,15 +68,19 @@ jobs:
               }'
           else
             echo "TEST_TITLE: $TITLE"
+            echo "TEST_SHORT_TITLE: $SHORT_TITLE"
+            echo "TEST_CONTENT: $CONTENT"
+            echo "TEST_AUTHOR: $AUTHOR"
 
 
-            curl -X POST https://devwiki.co.kr/api/post \
-            -H "Content-Type: application/json" \
-            -d '{
-              "title": "test",
-              "shortTitle": "test",
-              "content": "test",
-              "userName": "hwangstar156"
-            }'
+ 
+            curl -X POST $API_URL/api/post \
+              -H "Content-Type: application/json" \
+              -d '{
+                "title": "test",
+                "shortTitle": "$SHORT_TITLE",
+                "content": "$CONTENT",
+                "userName": "$AUTHOR"
+              }'
           fi
         done
