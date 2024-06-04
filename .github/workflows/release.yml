@@ -67,7 +67,7 @@ jobs:
                 "editor": "$AUTHOR"
               }'
           else
-            echo "TITLE: $TITLE"
+            echo "TEST_TITLE: $TITLE"
  
             curl -X POST $API_URL/api/post \
               -H "Content-Type: application/json" \
