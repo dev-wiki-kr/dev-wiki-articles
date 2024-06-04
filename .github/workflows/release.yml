@@ -61,7 +61,7 @@ jobs:
           curl -X POST https://devwiki.co.kr/api/post \
             -H "Content-Type: application/json" \
             -d '{
-              "title": "test"
+              "title": "test",
               "shortTitle": "test",
               "content": "test",
               "userName": "hwangstar156"
