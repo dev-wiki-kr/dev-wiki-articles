@@ -2,7 +2,7 @@ name: Release
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened, synchronize]
 
 jobs:
   release:
@@ -63,7 +63,7 @@ jobs:
             curl -X PATCH $API_URL/api/post/$SHORT_TITLE \
               -H "Content-Type: application/json" \
               -d '{
-                "title": "$TITLE",
+                "title": $TITLE,
                 "content": "${CONTENT}",
                 "editor": "${AUTHOR}"
               }'
@@ -71,7 +71,7 @@ jobs:
             curl -X POST $API_URL/api/post \
               -H "Content-Type: application/json" \
               -d '{
-                "title": "$TITLE",
+                "title": $TITLE,
                 "shortTitle": "${SHORT_TITLE}",
                 "content": "${CONTENT}",
                 "userName": "${AUTHOR}"
