@@ -48,8 +48,7 @@ jobs:
 
           while IFS= read -r line; do
             if [[ "$line" =~ ^#[^#].* ]]; then
-              echo "TITLE=${line#\# }" >> $GITHUB_ENV
-              echo "TEST: ${line#\# }"
+              "TITLE=${line#\# }"
               break
             fi
           done <<< $CONTENT
