@@ -59,12 +59,18 @@ jobs:
           echo "API_URL: $AUTHOR"
 
           if [ $STATUS = "modified" ]; then
+
+          echo "UPDATE_TITLE: $TITLE"
+
           JSON_BODY=$(jq -n --arg title "$TITLE" --arg content "$CONTENT" --arg editor "$AUTHOR" '{title: "$title", content: "$content", editor: "$editor"}')
 
             curl -X PATCH $API_URL/api/post/$SHORT_TITLE \
               -H "Content-Type: application/json" \
               -d "$JSON_BODY"
           else
-
+            echo "TEST_TITLE: $TITLE"
+            echo "TEST_SHORT_TITLE: $SHORT_TITLE"
+            echo "TEST_CONTENT: $CONTENT"
+            echo "TEST_AUTHOR: $AUTHOR"
           fi
         done
