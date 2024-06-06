@@ -76,7 +76,7 @@ jobs:
                 "title": "$TITLE",
                 "shortTitle": "$SHORT_TITLE",
                 "content": "$CONTENT",
-                "username": "$AUTHOR"
+                "userName": "$AUTHOR"
               }'
           fi
         done
