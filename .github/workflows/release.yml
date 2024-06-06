@@ -70,12 +70,16 @@ jobs:
             echo "TEST_CONTENT: $CONTENT"
             echo "TEST_AUTHOR: $AUTHOR"
 
-            JSON_BODY=$(jq -n --arg title "$TITLE" --arg shortTitle "$SHORT_TITLE" --arg content "$CONTENT" --arg userName "$AUTHOR" '{title: "$title", shortTitle: "$shortTitle", content: "$content", userName: "$userName"}')
-
+            JSON_BODY=$(jq -n \
+              --arg title "$TITLE" \
+              --arg shortTitle "$SHORT_TITLE" \
+              --arg content "$CONTENT" \
+              --arg userName "$AUTHOR" \
+              '{title: $title, shortTitle: $shortTitle, content: $content, userName: $userName}')
             echo "$JSON_BODY"
 
             curl -X POST $API_URL/api/post \
               -H "Content-Type: application/json" \
-              -d $JSON_BODY
+              -d "$JSON_BODY"
           fi
         done
