@@ -67,7 +67,7 @@ jobs:
               --arg editor "$AUTHOR" \
               '{title: $title, content: $content, editor: $editor}')
 
-              curl -X PATCH $API_URL/api/post/$SHORT_TITLE \
+              curl -X PATCH $API_URL/wiki-api/post/$SHORT_TITLE \
                 -H "Content-Type: application/json" \
                 -d "$JSON_BODY"
             else
@@ -83,7 +83,7 @@ jobs:
                 --arg userName "$AUTHOR" \
                 '{title: $title, shortTitle: $shortTitle, content: $content, userName: $userName}')
 
-              curl -X POST $API_URL/api/post \
+              curl -X POST $API_URL/wiki-api/post \
                 -H "Content-Type: application/json" \
                 -d "$JSON_BODY"
             fi
