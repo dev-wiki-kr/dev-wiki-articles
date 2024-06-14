@@ -12,10 +12,8 @@ Three.js는 복잡한 WebGL API를 추상화하여, 3D 그래픽을 쉽게 구�
 
 예를 들어, Three.js를 사용하면 기본적인 3D 장면을 설정하고 렌더링하는 데 필요한 코드가 간단하며 직관적이다.
 
-[[Beginning with 3D WebGL](https://codepen.io/rachsmith/post/beginning-with-3d-webgl-pt-1-the-scene) by [Rachel Smith](https://codepen.io/rachsmith/) - [Three.js 공식문서에 소개된 튜토리얼 코스](https://threejs.org/docs/index.html#manual/en/introduction/Useful-links).
-](https://codepen.io/rachsmith/pen/qbKvdd)
-
-[Beginning with 3D WebGL](https://codepen.io/rachsmith/post/beginning-with-3d-webgl-pt-1-the-scene) by [Rachel Smith](https://codepen.io/rachsmith/) - [Three.js 공식문서에 소개된 튜토리얼 코스](https://threejs.org/docs/index.html#manual/en/introduction/Useful-links).
+- [Beginning with 3D WebGL](https://codepen.io/rachsmith/post/beginning-with-3d-webgl-pt-1-the-scene)
+by [Rachel Smith](https://codepen.io/rachsmith/) - [Three.js 공식문서에 소개된 튜토리얼 코스](https://threejs.org/docs/index.html#manual/en/introduction/Useful-links).
 
 프로젝트 초기 단계에서 빠른 프로토타이핑을 가능하게 하고, 복잡한 그래픽 구현에 소요되는 시간을 줄여준다. 또한, 다양한 예제 코드와 샘플이 제공되어, 초보자도 쉽게 따라할 수 있다. 이러한 접근성은 3D 그래픽 개발의 진입 장벽을 낮추고, 더 많은 개발자들이 3D 웹 애플리케이션을 시도할 수 있게 한다.
 
