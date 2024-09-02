@@ -28,7 +28,7 @@ function printValue(value: string | number) {
 
 ### 3.2. Discriminated Unions (구별된 유니온)
 
-**Discriminated Unions**는 Type Narrowing에서 매우 중요한 패턴입니다. 
+[Discriminated Unions](https://devwiki.co.kr/post/discriminated-unions)는 Type Narrowing에서 매우 중요한 패턴입니다. 
 
 Discriminated Union은 각 유니언 멤버에 공통적으로 사용되는 `kind` 또는 `type` 같은 **디스크리미네이터(discriminator) 필드**를 사용하여 타입을 좁히는 방법입니다. 이 방법은 TypeScript가 자동으로 타입을 좁힐 수 있도록 돕습니다.
 
