@@ -66,7 +66,7 @@ function UserProfile({ id, name, age }: UserProfileProps) {
 }
 ```
 
-### 장점
+### 2.1. 장점
 
 - **컴파일 시점 타입 검증**: TypeScript는 컴파일 시점에 타입을 검증하므로, 개발자가 코드를 작성할 때 타입 오류를 즉시 확인할 수 있습니다. 이는 런타임 오류를 사전에 방지하는 데 매우 효과적입니다.
 
@@ -74,7 +74,7 @@ function UserProfile({ id, name, age }: UserProfileProps) {
 
 - **IDE와의 결합**: TypeScript에는 VSCode뿐만 아니라 TypeScript를 지원하는 다양한 IDE와 함께 작동하는 도구도 있기에 개발 생산성 향상에 도움이 됩니다.
 
-### 단점
+### 2.2. 단점
 
 1. **초기 설정 및 학습 곡선**: TypeScript는 PropTypes에 비해 초기 설정이 복잡하며, 새로운 문법과 개념을 익히는 데 시간이 걸릴 수 있습니다.
 
