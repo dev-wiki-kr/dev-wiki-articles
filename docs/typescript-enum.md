@@ -1,4 +1,4 @@
-# TypeScript Enum: `enum`, `const enum`, 그리고 `as const` 비교
+# TypeScript Enum: enum, const enum, 그리고 as const 비교
 
 TypeScript에서 `enum`은 고정된 상수 값의 집합을 정의하는 강력한 기능입니다. 하지만 `enum` 사용 방식에 따라 코드의 최적화와 성능에 큰 차이가 발생할 수 있습니다.
 
